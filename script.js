@@ -15,12 +15,13 @@ const PRECO_POR_KM = 2.5;
 
 // ESTOQUE INICIAL
 const ESTOQUE_SIMULADO_INICIAL = {
-    "1": 8,
-    "2": 4,
+    "1": 6,
+    "2": 3,
     "3": 0,
     "4": 0,
-    "5": 4,
-    "6": 4,
+    "5": 2,
+    "6": 5,
+    "7": 5,
 };
 
 // --- FUNÇÕES GERAIS ---
@@ -458,4 +459,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     setupSearch();
+
 });
