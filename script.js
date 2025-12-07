@@ -420,12 +420,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ?.addEventListener('click', buscarEnderecoECalcularFrete);
     }
 
-    // (Re)ativa botões Adicionar
+    // (Re)ativa botões Adicionar — **SEM CLONAR** para não quebrar listeners/estado
     document.querySelectorAll('.btn-adicionar').forEach(btn => {
-        const clone = btn.cloneNode(true);
-        btn.parentNode.replaceChild(clone, btn);
-
-        clone.addEventListener('click', function () {
+        // Remove possíveis listeners antigos duplicados para evitar handlers múltiplos
+        btn.replaceWith(btn.cloneNode(true));
+    });
+    // Re-query após cloneNode replacement to attach a clean single listener
+    document.querySelectorAll('.btn-adicionar').forEach(btn => {
+        btn.addEventListener('click', function () {
             adicionarAoCarrinho(
                 this.getAttribute('data-id'),
                 this.getAttribute('data-nome'),
