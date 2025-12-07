@@ -161,6 +161,7 @@ h3{font-size:1.1rem;margin-bottom:10px}
     background-size: cover;
     background-position: center;
     border-radius: 10px; 
+    margin-bottom:14px;
     animation: trocaRosase 3600s infinite ease-in-out;
 }
 
@@ -179,6 +180,7 @@ h3{font-size:1.1rem;margin-bottom:10px}
     background-size: cover;
     background-position: center;
     border-radius: 10px; 
+    margin-bottom:14px;
     animation: trocaAlecrim 3600s infinite ease-in-out;
 }
 
@@ -416,6 +418,7 @@ footer{
 }
 
 /* fim do CSS */
+
 
 
 
