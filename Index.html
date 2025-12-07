@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Loja de cosméticos artesanais virtual, Rosa Vermelha Essências, perfumes e aromas.">
+    <meta name="keywords" content="loja, e-comerce, rosa vermelha, perfumes, cosméticos, essências, rosa vermelha essências">
+    <meta name="author" content="Luiz Miguel Rodrigues">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="content-language" content="pt-br">
+    <title>Rosa Vermelha Essências | Loja Virtual</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="https://media.istockphoto.com/id/1358622602/pt/foto/red-rose-flower-head-white-background.jpg?s=612x612&w=0&k=20&c=D60zJNBxZWcjdVnqjv-u3sQL6gorVVjBxW1VjxiadEo=" type="image/jpg">
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+        <div class="site-icon">
+            <a href="index.html"><img src="logo.png" alt="Rosa Vermelha"></a>
+        </div>
+
+        <div class="search-container">
+            <input type="text" placeholder="O que você procura?" class="search-input">
+            <button class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <div class="menu-mobile-icon">
+            <i class="fas fa-bars"></i>
+        </div>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="ativo"><i class="fas fa-home"></i><b>Início</b></a></li>
+                    <li><a href="produtos.html"><i class="fas fa-spray-can-sparkles"></i>Produtos</a></li>
+                    <li><a href="sobre.html"><i class="fas fa-info-circle"></i>Sobre Nós</a></li>
+                    <li><a href="carrinho.html" style="font-weight: bold;"><i class="fas fa-bag-shopping"></i> Sacola</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section style="text-align: center; margin-bottom: 40px;">
+            <h1>Aromas que tocam a alma</h1>
+            <p>Bem-vindo(a) à nossa loja virtual. Produtos artesanais e orgânicos feitos com carinho.</p>
+            <br>
+            <a href="produtos.html" class="btn-catalogo">Ver catálogo completo</a>
+        </section>
+
+        <section id="destaques">
+            <h2>Destaques do Mês</h2>
+        <div class="grid-produtos">
+            
+            <div class="produto-card">
+                <img src="perf-rosa.verm.jpg" alt="Perfume Rosa Verm. Baun. 100ml">
+                <h3>Perfume de Rosa Vermelha c/ Baunilha 100ml</h3>
+                <p class="preco">R$ 64,90</p>
+                <p class="estoque-display">Restam: <b id="estoque-1">8</b></p>
+                
+                <button class="btn-adicionar" 
+                    data-id="1" 
+                    data-nome="Perfume Rosa Vermelha c/ Baunilha 100ml" 
+                    data-preco="64.90"
+                    data-estoque="8">
+                    <i class="fas fa-bag-shopping"></i> Adicionar à Sacola
+                </button>
+            </div>
+
+            <div class="produto-card">
+                <img src="perf-alecrim.png" alt="Perfume Alecrim 100ml">
+                <h3>Perfume de Alecrim 100ml</h3>
+                <p class="preco">R$ 64,90</p>
+                <p class="estoque-display">Restam: <b id="estoque-2">Esgotado!</b></p>
+                
+                <button class="btn-adicionar" 
+                    data-id="2" 
+                    data-nome="Perfume Alecrim 100ml" 
+                    data-preco="64.90"
+                    data-estoque="0">
+                    <i class="fas fa-bag-shopping"></i> Adicionar à Sacola
+                </button>
+            </div>
+
+            <div class="produto-card">
+                <div class="placeholder">Imagem Indisponível</div>
+                <h3>Perfume de Rosas Roxas c/ Baunilha 50ml</h3>
+                <p class="preco">R$ 32,49</p>
+                <p class="estoque-display">Restam: <b id="estoque-5">4</b></p>
+                
+                <button class="btn-adicionar" 
+                    data-id="5" 
+                    data-nome="Perfume de Rosas Roxas c/ Baunilha 50ml" 
+                    data-preco="32.49"
+                    data-estoque="4">
+                    <i class="fas fa-bag-shopping"></i> Adicionar à Sacola
+                </button>
+            </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h4>Rosa Vermelha essências</h4>
+                <p>Perfumes Artesanais</p>
+            </div>
+            <div class="footer-section">
+                <h4>Fale Conosco</h4>
+                <p><i class="fas fa-envelope"></i> roseluizmiguel@gmail.com</p>
+                <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/48998215027" target="_blank" style="color: #333; text-decoration: none;">(48) 99821-5027</a></p>
+                <p><i class="fab fa-instagram"></i> @rosavermelhaessencias</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Rosa Vermelha Essências.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+/* ===========================
+   style.css — Rosa Vermelha Essências
+   Tema: Vermelho & Champagne + Branco Clean
+   Versão Premium Mix (Pulse + Glow + Bounce)
+   =========================== */
+
+/* --- VARIAVEIS E RESET --- */
+:root{
+    --cor-primaria: #e60505;
+    --cor-primaria-escura: #c40404;
+    --cor-secundaria: #e6a200;
+    --cor-secundaria-escura: #dea00b;
+    --cor-fundo: #ffffff;
+    --cor-texto: #2b2b2b;
+    --cor-cinza-claro: #f6f6f6;
+    --card-bg: #ffffff;
+    --suavidade: 0.22s;
+    --sombra-leve: 0 6px 18px rgba(15,15,15,0.06);
+    --sombra-forte: 0 10px 30px rgba(0,0,0,0.12);
+    --outline: rgba(218,184,106,0.18);
+}
+
+/* Reset */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height:1.6;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+}
+
+/* Links */
+a{color:inherit;text-decoration:none}
+
+/* --- HEADER --- */
+header{
+    background: linear-gradient(180deg, var(--cor-primaria), var(--cor-primaria-escura));
+    color:white;
+    padding:14px 0;
+    box-shadow: var(--sombra-leve);
+    position:sticky;top:0;z-index:1000;
+}
+
+.header-container{
+    max-width:1200px;margin:0 auto;padding:0 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:18px;
+}
+
+/* --- ANIMAÇÃO PREMIUM DA LOGO (Pulse + Glow + Bounce) --- */
+.site-icon img{
+    height:60px;
+    animation: logoMix 4s ease-in-out infinite !important;
+    transform-origin:center;
+}
+
+@keyframes logoMix{
+    0%   { transform:scale(1) translateY(0); filter:drop-shadow(0 0 0 rgba(255,200,80,0)); }
+    25%  { transform:scale(1.08) translateY(-2px); filter:drop-shadow(0 0 8px rgba(255,200,80,0.45)); }
+    50%  { transform:scale(1.06) translateY(0); filter:drop-shadow(0 0 12px rgba(255,200,80,0.35)); }
+    75%  { transform:scale(1.03) translateY(-3px); filter:drop-shadow(0 0 6px rgba(255,200,80,0.25)); }
+    100% { transform:scale(1) translateY(0); filter:drop-shadow(0 0 0 rgba(255,200,80,0)); }
+}
+
+/* --- MENU MOBILE --- */
+.menu-mobile-icon{
+    display:none;font-size:1.9rem;cursor:pointer;color:rgba(255,255,255,0.96);
+}
+
+.nav-links{
+    display:flex;gap:28px;list-style:none;align-items:center;
+}
+
+.nav-links a{
+    color:white;font-weight:600;
+    padding:6px 4px;position:relative;transition:color .25s;
+}
+
+/* underline */
+.nav-links a::after{
+    content:"";position:absolute;left:0;bottom:-6px;width:0%;height:3px;
+    background:linear-gradient(90deg,var(--cor-secundaria),var(--cor-secundaria-escura));
+    border-radius:3px;transition:width .28s cubic-bezier(.2,.9,.3,1);
+}
+
+.nav-links a:hover{color:#fff;}
+.nav-links a:hover::after, .nav-links a.ativo::after{width:100%}
+
+/* --- PESQUISA --- */
+.search-container{
+    display:flex;background:white;border-radius:30px;padding:6px 14px;
+    flex-grow:1;max-width:420px;margin:0 18px;align-items:center;
+    box-shadow:0 6px 14px rgba(0,0,0,0.04);transition:all .22s;
+}
+.search-container:hover{
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    transform:translateY(-2px);
+}
+
+.search-input{border:none;outline:none;width:100%;font-size:1rem}
+.search-btn{
+    background:none;border:none;font-size:1.1rem;color:var(--cor-primaria);
+    cursor:pointer;transition:.2s;
+}
+.search-btn:hover{transform:scale(1.1);color:var(--cor-secundaria)}
+
+/* --- MAIN --- */
+main{max-width:1200px;margin:22px auto;padding:0 20px;flex-grow:1}
+h1,h2{color:var(--cor-primaria);margin-bottom:14px}
+
+/* --- GRID PRODUTOS --- */
+.grid-produtos{
+    display:grid;gap:20px;margin-top:30px;grid-template-columns:1fr;
+}
+@media(min-width:600px) {.grid-produtos{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.grid-produtos{grid-template-columns:repeat(4,1fr)}}
+
+/* --- CARDS --- */
+.produto-card{
+    background:white;border:1px solid rgba(0,0,0,0.05);
+    border-radius:12px;padding:18px;text-align:center;
+    box-shadow:var(--sombra-leve);transition:.25s;
+}
+.produto-card:hover{
+    transform:translateY(-6px);
+    box-shadow:var(--sombra-forte);
+}
+
+.produto-card img{
+    width:100%;max-height:250px;object-fit:contain;border-radius:8px;margin-bottom:14px;
+}
+
+/* placeholder */
+.produto-card .placeholder{
+    width:100%;height:250px;background:#eee;color:#999;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;border:2px dashed #ddd;
+}
+
+h3{font-size:1.1rem;margin-bottom:10px}
+.preco{font-size:1.25rem;color:var(--cor-primaria);font-weight:bold}
+.estoque-display{font-size:.9rem;color:#666;margin-bottom:12px}
+
+/* --- BOTÕES --- */
+button,
+.btn-adicionar,
+#finalizar-compra-btn,
+#btn-frete,
+.btn-catalogo,
+.btn-continuar{
+    border:none;border-radius:30px;
+    cursor:pointer;font-family:inherit;
+    transition:all .25s ease;
+}
+
+/* adicionar */
+.btn-adicionar{
+    background:linear-gradient(180deg,var(--cor-secundaria),var(--cor-secundaria-escura));
+    color:#111;font-weight:700;padding:12px;width:100%;
+    box-shadow:0 6px 18px rgba(210,170,90,0.12);
+}
+.btn-adicionar:hover{
+    transform:translateY(-3px) scale(1.02);
+    box-shadow:0 12px 30px rgba(210,170,90,0.20);
+    filter:brightness(1.05);
+}
+
+/* finalizar compra */
+#finalizar-compra-btn{
+    background:linear-gradient(90deg,#25D366,#20b858);
+    color:white;font-weight:800;padding:14px;
+    box-shadow:0 8px 22px rgba(37,211,102,0.16);
+}
+#finalizar-compra-btn:disabled{
+    background:#ddd;color:#777;cursor:not-allowed;box-shadow:none;
+}
+
+/* botão do frete */
+#btn-frete{
+    background:var(--cor-primaria);color:white;padding:9px 12px;font-weight:700;
+    border-radius:10px;box-shadow:0 6px 18px rgba(230,5,5,0.15);
+}
+#btn-frete:hover{
+    background:var(--cor-secundaria);color:#111;
+    transform:translateY(-2px) scale(1.03);
+}
+
+/* --- BOTÕES ESPECIAIS (CATÁLOGO E CONTINUAR) --- */
+.btn-catalogo,
+.btn-continuar{
+    background:linear-gradient(180deg,var(--cor-primaria),var(--cor-primaria-escura));
+    color:white;
+    padding:12px 22px;
+    font-weight:700;
+    display:inline-flex;align-items:center;gap:8px;
+    box-shadow:0 6px 18px rgba(210,170,90,0.18);
+    margin-top:18px;
+}
+
+.btn-catalogo:hover,
+.btn-continuar:hover{
+    transform:translateY(-3px) scale(1.03);
+    box-shadow:0 12px 32px rgba(210,170,90,0.28);
+    filter:brightness(1.07);
+}
+
+/* indisponível */
+.btn-catalogo:disabled,
+.btn-continuar:disabled{
+    background:#cfaf63 !important;
+    color:#666 !important;
+    cursor:not-allowed !important;
+    box-shadow:none !important;
+    transform:none !important;
+}
+
+/* --- TOAST --- */
+#toast-container{
+    position:fixed;top:20px;right:20px;z-index:9999;
+    display:flex;flex-direction:column;gap:12px;
+}
+.toast{
+    background:#222;color:white;padding:13px 18px;border-radius:10px;
+    display:flex;gap:10px;align-items:center;
+    border-left:6px solid var(--cor-secundaria);
+    animation: slideIn .3s ease-out;
+}
+
+/* --- FRETE --- */
+.frete-container{
+    margin:14px 0;padding:12px;background:white;border-radius:10px;
+    box-shadow:0 6px 16px rgba(0,0,0,0.05);
+}
+.input-group-frete{display:flex;gap:8px;margin-top:6px}
+#cep-input{flex:1;padding:9px;border:1px solid #ddd;border-radius:8px}
+
+/* --- FOOTER --- */
+footer{
+    background:linear-gradient(180deg,var(--cor-secundaria),var(--cor-secundaria-escura));
+    padding:36px 20px 28px;color:#222;margin-top:auto;
+}
+.footer-content{
+    max-width:1200px;margin:0 auto;
+    display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;
+}
+
+/* --- ANIMAÇÕES GERAIS --- */
+@keyframes slideIn{
+    from{transform:translateY(10px);opacity:0}
+    to{transform:translateY(0);opacity:1}
+}
+
+@keyframes fadeOut{
+    to{opacity:0;transform:translateX(30px)}
+}
+
+/* --- MOBILE --- */
+@media(max-width:768px){
+
+    .menu-mobile-icon{display:block;}
+
+    .nav-links{
+        position:absolute;top:86px;left:0;width:100%;
+        background:linear-gradient(180deg,var(--cor-primaria),var(--cor-primaria-escura));
+        flex-direction:column;display:none;padding:12px 0;
+        border-radius:0 0 12px 12px;transform-origin:top;
+    }
+
+    .nav-links.active{
+        display:flex;
+        animation:navDrop .35s cubic-bezier(.2,.9,.3,1);
+    }
+
+    @keyframes navDrop{
+        from{opacity:0;transform:translateY(-8px) scaleY(.96)}
+        to{opacity:1;transform:translateY(0) scaleY(1)}
+    }
+
+    .search-container{width:100%;margin:12px 0}
+
+    .cart-item-row{flex-direction:column;align-items:flex-start;gap:10px}
+}
+
+/* ===============================
+   TOAST ESTILO iOS – PUSH NOTIFICATION
+   =============================== */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toast {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    color: #222;
+    min-width: 260px;
+    max-width: 320px;
+    padding: 14px 18px;
+    border-radius: 18px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    position: relative;
+    font-weight: 600;
+    animation: iosSlideUp 0.45s cubic-bezier(.16,.82,.3,1) forwards;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.55);
+}
+
+/* Barra de progresso iOS */
+.toast::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(90deg,#e6a200,#dea00b);
+    animation: toastTimer 5s linear forwards;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* Ícone */
+.toast i {
+    font-size: 1.3rem;
+    opacity: 0.9;
+}
+
+/* Animações iOS */
+@keyframes iosSlideUp {
+    from {
+        transform: translateY(30px) scale(0.97);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.toast.hide {
+    animation: iosSlideDown 0.35s ease forwards;
+}
+
+@keyframes iosSlideDown {
+    from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(40px) scale(0.96);
+        opacity: 0;
+    }
+}
+
+/* Barra de progressão (5 segundos) */
+@keyframes toastTimer {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+/* fim do CSS */
