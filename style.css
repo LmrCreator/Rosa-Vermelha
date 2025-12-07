@@ -140,7 +140,7 @@ h1,h2{color:var(--cor-primaria);margin-bottom:14px}
 /* placeholder */
 .produto-card .placeholder{
    width:100%;
-   max-height:250px;
+   height:250px;
    background:#eee;
    color:#999;
    border-radius:10px;
@@ -382,4 +382,5 @@ footer{
 }
 
 /* fim do CSS */
+
 
