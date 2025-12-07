@@ -44,20 +44,16 @@
             <div class="resumo-carrinho">
                 <h2 style="border-bottom: none;">Resumo</h2>
                 <div class="frete-container">
-                    <label for="cep-input" style="font-weight: bold;">Calcular Frete e Entrega:</label>
+                    <label for="cep-input" style="font-weight: bold;">Definir local de entrega:</label>
                     <div class="input-group-frete">
                         <input type="text" id="cep-input" placeholder="Digite seu CEP (apenas números)" maxlength="9">
                         <button id="btn-frete" onclick="buscarEnderecoECalcularFrete()">OK</button>
 
                     </div>
-                    <div id="info-frete" class="frete-resultado"></div>
-                    <input type="hidden" id="valor-frete-hidden" value="0">
-                    <input type="hidden" id="endereco-completo-hidden" value="">
                 </div>
 
                 <p>Total de Itens: <span id="cart-count">0</span></p>
                 <p style="font-size: 1.5em; font-weight: bold;">Subtotal: <span id="cart-total">R$ 0,00</span></p>
-                <p style="display: flex; justify-content: space-between;">Frete: <span id="display-frete">R$ 0,00</span></p>
                 <button id="finalizar-compra-btn" class="btn-comprar" style="margin-top: 20px;" disabled>
                     <i class="fab fa-whatsapp"></i> Finalizar Compra (WhatsApp)
                 </button>
@@ -89,4 +85,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
