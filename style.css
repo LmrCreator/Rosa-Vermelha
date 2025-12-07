@@ -161,7 +161,7 @@ h3{font-size:1.1rem;margin-bottom:10px}
     background-size: cover;
     background-position: center;
     border-radius: 10px; 
-    animation: trocaRosase 10s infinite ease-in-out;
+    animation: trocaRosase 3600s infinite ease-in-out;
 }
 
 @keyframes trocaRosase {
@@ -179,7 +179,7 @@ h3{font-size:1.1rem;margin-bottom:10px}
     background-size: cover;
     background-position: center;
     border-radius: 10px; 
-    animation: trocaAlecrim 10s infinite ease-in-out;
+    animation: trocaAlecrim 3600s infinite ease-in-out;
 }
 
 @keyframes trocaAlecrim {
@@ -416,6 +416,7 @@ footer{
 }
 
 /* fim do CSS */
+
 
 
 
