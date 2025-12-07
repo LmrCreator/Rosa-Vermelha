@@ -88,6 +88,8 @@ function showToast(message, isError = false) {
 
     // Fechar sozinho em 5s
     setTimeout(() => {
+        // se já removido pelo clique, ignore
+        if (!document.body.contains(toast)) return;
         toast.classList.add("hide");
         toast.addEventListener("animationend", () => toast.remove());
     }, 5000);
@@ -102,6 +104,11 @@ async function buscarEnderecoECalcularFrete() {
     const infoFreteDiv = document.getElementById('info-frete');
     const enderecoHidden = document.getElementById('endereco-completo-hidden');
     const valorFreteHidden = document.getElementById('valor-frete-hidden');
+
+    if (!cepInput || !infoFreteDiv || !enderecoHidden || !valorFreteHidden) {
+        console.warn("Elementos de frete ausentes no DOM.");
+        return;
+    }
 
     const cep = cepInput.value.replace(/\D/g, '');
 
@@ -122,15 +129,14 @@ async function buscarEnderecoECalcularFrete() {
             return;
         }
 
-        const enderecoTexto = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
-
-        enderecoHidden.value = enderecoTexto;
+        const enderecoTexto = `${data.logradouro || ""}, ${data.bairro || ""}, ${data.localidade || ""} - ${data.uf || ""}`;
+        enderecoHidden.value = enderecoTexto.trim().replace(/^,|,$/g, "");
 
         // Frete SEM preço
         valorFreteHidden.value = "0.00";
 
         infoFreteDiv.innerHTML = `
-            <small>📍 ${enderecoTexto}</small><br>
+            <small>📍 ${enderecoHidden.value}</small><br>
             <span style="color:#333;font-weight:bold">Entrega a combinar</span>
         `;
 
@@ -138,7 +144,7 @@ async function buscarEnderecoECalcularFrete() {
         renderCart();
 
     } catch (e) {
-        console.log(e);
+        console.error(e);
         showToast("Erro ao buscar CEP.", true);
         infoFreteDiv.textContent = "Erro ao buscar CEP.";
     }
@@ -167,6 +173,22 @@ function getEstoque() {
 
 function saveEstoque(estoque) {
     localStorage.setItem(ESTOQUE_MAP_KEY, JSON.stringify(estoque));
+}
+
+/* ===== Função faltante que causava erro =====
+   Atualiza contador do ícone / badge do carrinho
+*/
+function updateCartIconCount() {
+    try {
+        const cart = getCart();
+        const total = cart.reduce((s, it) => s + (it.quantity || it.quantidade || 0), 0);
+
+        // Vários possíveis IDs que seu HTML pode ter
+        const elems = document.querySelectorAll('#cart-count, #cart-count-icon, .cart-badge');
+        elems.forEach(el => el.textContent = total);
+    } catch (e) {
+        console.warn("updateCartIconCount erro", e);
+    }
 }
 
 function atualizarVisualEstoque(id, quantidade) {
@@ -199,49 +221,64 @@ function atualizarVisualEstoque(id, quantidade) {
 function adicionarAoCarrinho(id, nome, preco) {
     const estoque = getEstoque();
 
-    if (estoque[id] <= 0) {
+    if (estoque[id] === undefined) {
+        // se ID não existir no estoque, assume disponível
+        console.warn("ID não encontrado no estoque:", id);
+    }
+
+    if (estoque[id] !== undefined && estoque[id] <= 0) {
         showToast("Produto esgotado!", true);
         return;
     }
 
-    estoque[id]--;
-    saveEstoque(estoque);
+    if (estoque[id] !== undefined) {
+        estoque[id]--;
+        saveEstoque(estoque);
+    }
 
     const cart = getCart();
-    const itemExistente = cart.find(item => item.id == id);
+    const itemExistente = cart.find(item => String(item.id) === String(id));
 
     if (itemExistente) {
-        itemExistente.quantity++;
+        // compatibilidade com suas chaves anteriores
+        if (typeof itemExistente.quantity === 'number') itemExistente.quantity++;
+        else if (typeof itemExistente.quantidade === 'number') itemExistente.quantidade++;
+        else itemExistente.quantity = (itemExistente.quantity || itemExistente.quantidade || 0) + 1;
     } else {
-        cart.push({ id, name: nome, priceValue: parseFloat(preco), quantity: 1 });
+        cart.push({ id: String(id), name: nome, priceValue: parseFloat(preco), quantity: 1 });
     }
 
     saveCart(cart);
-    atualizarVisualEstoque(id, estoque[id]);
+    atualizarVisualEstoque(id, estoque[id] !== undefined ? estoque[id] : 999);
     showToast(`"${nome}" adicionado à sacola!`);
 }
 
 function updateCartItem(productId, quantityChange) {
     let cart = getCart();
-    const itemIndex = cart.findIndex(item => item.id == productId);
+    const itemIndex = cart.findIndex(item => String(item.id) === String(productId));
     const estoque = getEstoque();
 
     if (itemIndex > -1) {
         const item = cart[itemIndex];
 
         if (quantityChange > 0) {
-            if (estoque[productId] > 0) {
-                estoque[productId]--;
-                item.quantity++;
+            if (estoque[productId] !== undefined) {
+                if (estoque[productId] > 0) {
+                    estoque[productId]--;
+                    item.quantity++;
+                } else {
+                    showToast("Sem estoque!", true);
+                    return;
+                }
             } else {
-                showToast("Sem estoque!", true);
-                return;
+                // se não temos controle de estoque para esse id, só aumenta
+                item.quantity++;
             }
         }
 
         if (quantityChange < 0) {
             item.quantity--;
-            estoque[productId]++;
+            if (estoque[productId] !== undefined) estoque[productId]++;
         }
 
         if (item.quantity <= 0) cart.splice(itemIndex, 1);
@@ -258,7 +295,8 @@ function renderCart() {
 
     const cart = getCart();
     const valorFreteHidden = document.getElementById('valor-frete-hidden');
-    let frete = valorFreteHidden ? parseFloat(valorFreteHidden.value) : 0;
+    let frete = 0;
+    if (valorFreteHidden) frete = parseFloat(valorFreteHidden.value) || 0;
 
     let totalProdutos = 0;
     let totalItens = 0;
@@ -267,24 +305,30 @@ function renderCart() {
         container.innerHTML =
             '<p style="text-align:center;margin-top:30px;color:#666;">Sua sacola está vazia.</p>';
 
-        document.getElementById('finalizar-compra-btn').disabled = true;
+        const btnFinal = document.getElementById('finalizar-compra-btn');
+        if (btnFinal) btnFinal.disabled = true;
 
-        document.getElementById('cart-total').innerText = "R$ 0,00";
-        document.getElementById('cart-count').innerText = "0";
-        document.getElementById('display-frete').innerText = "R$ 0,00";
+        const cartTotalEl = document.getElementById('cart-total');
+        if (cartTotalEl) cartTotalEl.innerText = "R$ 0,00";
+
+        const cartCountEl = document.getElementById('cart-count');
+        if (cartCountEl) cartCountEl.innerText = "0";
+
+        const displayFreteEl = document.getElementById('display-frete');
+        if (displayFreteEl) displayFreteEl.innerText = "R$ 0,00";
         return;
     }
 
     container.innerHTML = cart.map(item => {
-        const itemTotal = item.priceValue * item.quantity;
+        const itemTotal = (item.priceValue || 0) * (item.quantity || 0);
         totalProdutos += itemTotal;
-        totalItens += item.quantity;
+        totalItens += item.quantity || 0;
 
         return `
             <div class="cart-item-row" style="display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid #eee">
                 <div style="flex:1">
                     <strong>${item.name}</strong><br>
-                    <small style="color:#666">Unit: R$ ${item.priceValue.toFixed(2).replace('.', ',')}</small>
+                    <small style="color:#666">Unit: R$ ${(item.priceValue || 0).toFixed(2).replace('.', ',')}</small>
                 </div>
                 <div style="display:flex;align-items:center;gap:10px">
                     <button onclick="updateCartItem('${item.id}', -1)">-</button>
@@ -298,11 +342,17 @@ function renderCart() {
 
     const totalFinal = totalProdutos; // SEM frete
 
-    document.getElementById('finalizar-compra-btn').disabled = false;
-    document.getElementById('cart-total').innerText =
-        `R$ ${totalFinal.toFixed(2).replace('.', ',')}`;
-    document.getElementById('cart-count').innerText = totalItens;
-    document.getElementById('display-frete').innerText = "A combinar";
+    const btnFinal = document.getElementById('finalizar-compra-btn');
+    if (btnFinal) btnFinal.disabled = false;
+
+    const cartTotalEl = document.getElementById('cart-total');
+    if (cartTotalEl) cartTotalEl.innerText = `R$ ${totalFinal.toFixed(2).replace('.', ',')}`;
+
+    const cartCountEl = document.getElementById('cart-count');
+    if (cartCountEl) cartCountEl.innerText = totalItens;
+
+    const displayFreteEl = document.getElementById('display-frete');
+    if (displayFreteEl) displayFreteEl.innerText = "A combinar";
 }
 
 /* ======================================================
@@ -313,14 +363,14 @@ function finalizePurchase() {
     const cart = getCart();
     if (cart.length === 0) return;
 
-    const endereco = document.getElementById('endereco-completo-hidden').value || "Endereço não informado";
+    const endereco = (document.getElementById('endereco-completo-hidden') || {}).value || "Endereço não informado";
 
     let message = "Olá! Gostaria de finalizar minha sacola na Rosa Vermelha Essências:\n\n";
 
     let totalProdutos = 0;
 
     cart.forEach(item => {
-        const total = item.priceValue * item.quantity;
+        const total = (item.priceValue || 0) * (item.quantity || 0);
         totalProdutos += total;
 
         message += `${item.quantity}x ${item.name} - R$ ${total.toFixed(2).replace('.', ',')}\n`;
@@ -329,34 +379,48 @@ function finalizePurchase() {
     message += `\n*Subtotal:* R$ ${totalProdutos.toFixed(2).replace('.', ',')}`;
     message += `\n*Entrega:* A combinar`;
     message += `\n*Endereço:* ${endereco}`;
-
     message += `\n\n*TOTAL FINAL:* R$ ${totalProdutos.toFixed(2).replace('.', ',')}`;
 
     localStorage.removeItem(LS_KEY);
     renderCart();
+    updateCartIconCount();
 
     window.open(`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(message)}`);
 }
 
 /* ======================================================
-   EVENTOS
+   INICIALIZAÇÃO E EVENTOS
 ====================================================== */
+
+function carregarEstoqueVisual() {
+    const estoque = getEstoque();
+
+    document.querySelectorAll('.btn-adicionar').forEach(btn => {
+        const id = btn.getAttribute('data-id');
+        const qtd = estoque[id] !== undefined ? parseInt(estoque[id]) : 0;
+        atualizarVisualEstoque(id, qtd);
+    });
+}
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    // Carrega estoque visual se houver produtos na página
     if (document.querySelectorAll('.produto-card').length > 0) {
         carregarEstoqueVisual();
     }
 
+    // Renderiza carrinho se estiver na página do carrinho
     if (document.getElementById('cart-items')) {
         renderCart();
         document.getElementById('finalizar-compra-btn')
             ?.addEventListener('click', finalizePurchase);
 
-        document.getElementById('btn-calcular-frete')
+        // correção: seu botão no HTML é "btn-frete"
+        document.getElementById('btn-frete')
             ?.addEventListener('click', buscarEnderecoECalcularFrete);
     }
 
+    // (Re)ativa botões Adicionar
     document.querySelectorAll('.btn-adicionar').forEach(btn => {
         const clone = btn.cloneNode(true);
         btn.parentNode.replaceChild(clone, btn);
@@ -381,4 +445,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+
+    // atualiza badge inicial
+    updateCartIconCount();
 });
