@@ -9,81 +9,101 @@
     <meta name="robots" content="index, follow">
     <meta http-equiv="content-language" content="pt-br">
     <title>Minha Sacola | Rosa Vermelha</title>
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="https://media.istockphoto.com/id/1358622602/pt/foto/red-rose-flower-head-white-background.jpg?s=612x612&w=0&k=20&c=D60zJNBxZWcjdVnqjv-u3sQL6gorVVjBxW1VjxiadEo=" type="image/jpg">
 </head>
 <body>
 
-    <header>
-        <div class="header-container">
-            <div class="site-icon">
-                <a href="index.html"><img src="logo.png" alt="Rosa Vermelha"></a>
-            </div>
-            <div class="menu-mobile-icon">
-                <i class="fas fa-bars"></i>
-            </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="index.html"><i class="fas fa-home"></i>Início</a></li>
-                    <li><a href="produtos.html"><i class="fas fa-spray-can-sparkles"></i>Produtos</a></li>
-                    <li><a href="sobre.html"><i class="fas fa-info-circle"></i>Sobre Nós</a></li>
-                    <li><a href="carrinho.html" style="font-weight: bold;" class="ativo"><i class="fas fa-bag-shopping"></i> Sacola</a></li>
-                </ul>
-            </nav>
+<header>
+    <div class="header-container">
+        <div class="site-icon">
+            <a href="index.html"><img src="logo.png" alt="Rosa Vermelha"></a>
         </div>
-    </header>
+        <div class="menu-mobile-icon">
+            <i class="fas fa-bars"></i>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i>Início</a></li>
+                <li><a href="produtos.html"><i class="fas fa-spray-can-sparkles"></i>Produtos</a></li>
+                <li><a href="sobre.html"><i class="fas fa-info-circle"></i>Sobre Nós</a></li>
+                <li><a href="carrinho.html" class="ativo" style="font-weight: bold;"><i class="fas fa-bag-shopping"></i> Sacola</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
-    <main>
-        <h1><i class="fas fa-bag-shopping"></i> Sua Sacola</h1>
-        <section class="carrinho-container">
-            <div id="cart-items">
-                <p style="text-align: center; margin-top: 30px;"> Sua sacola está vazia. Adicione produtos! </p>
-            </div>
-            
-            <div class="resumo-carrinho">
-                <h2 style="border-bottom: none;">Resumo</h2>
-                <div class="frete-container">
-                    <label for="cep-input" style="font-weight: bold;">Definir local de entrega:</label>
-                    <div class="input-group-frete">
-                        <input type="text" id="cep-input" placeholder="Digite seu CEP (apenas números)" maxlength="9">
-                        <button id="btn-frete" onclick="buscarEnderecoECalcularFrete()">OK</button>
+<main>
+    <h1><i class="fas fa-bag-shopping"></i> Sua Sacola</h1>
 
-                    </div>
+    <section class="carrinho-container">
+
+        <div id="cart-items">
+            <p style="text-align: center; margin-top: 30px;">Sua sacola está vazia. Adicione produtos!</p>
+        </div>
+
+        <!-- Resumo -->
+        <div class="resumo-carrinho">
+            <h2 style="border-bottom:none;">Resumo</h2>
+
+            <div class="frete-container">
+                <label for="cep-input" style="font-weight: bold;">Definir local de entrega:</label>
+
+                <div class="input-group-frete">
+                    <input type="text" id="cep-input" placeholder="Digite seu CEP (apenas números)" maxlength="9">
+                    <button id="btn-frete" onclick="buscarEnderecoECalcularFrete()">OK</button>
                 </div>
 
-                <p>Total de Itens: <span id="cart-count">0</span></p>
-                <p style="font-size: 1.5em; font-weight: bold;">Subtotal: <span id="cart-total">R$ 0,00</span></p>
-                <button id="finalizar-compra-btn" class="btn-comprar" style="margin-top: 20px;" disabled>
-                    <i class="fab fa-whatsapp"></i> Finalizar Compra (WhatsApp)
-                </button>
+                <!-- Resultado do frete -->
+                <div id="info-frete" class="frete-resultado"></div>
             </div>
 
-        </section>
-        
-        <a href="produtos.html" class="btn-continuar">← Continuar comprando</a>
+            <!-- Valores -->
+            <p>Total de itens: <span id="cart-count">0</span></p>
+            <p>Frete: <span id="display-frete">A combinar</span></p>
 
-    </main>
+            <p style="font-size: 1.5em; font-weight: bold;">
+                Subtotal: <span id="cart-total">R$ 0,00</span>
+            </p>
 
-    <footer>
-        <div class="footer-content">
-            <div>
-                <h4>Rosa Vermelha essências</h4>
-                <p>Perfumes Artesanais</p>
-            </div>
-            <div class="footer-section">
-                <h4>Fale Conosco</h4>
-                <p><i class="fas fa-envelope"></i> roseluizmiguel@gmail.com</p>
-                <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/48998215027" target="_blank" style="color: #333; text-decoration: none;">(48) 99821-5027</a></p>
-                <p><i class="fab fa-instagram"></i> @rosavermelhaessencias</p>
-            </div>
+            <button id="finalizar-compra-btn" class="btn-comprar" style="margin-top:20px;" disabled>
+                <i class="fab fa-whatsapp"></i> Finalizar Compra (WhatsApp)
+            </button>
+
+            <!-- Campos necessários para o JavaScript -->
+            <input type="hidden" id="endereco-completo-hidden">
+            <input type="hidden" id="valor-frete-hidden" value="0">
+
         </div>
-        <div class="copyright">
-            <p>&copy; 2025 Rosa Vermelha Essências.</p>
-        </div>
-    </footer>
+    </section>
 
-    <script src="script.js"></script>
+    <a href="produtos.html" class="btn-continuar">← Continuar comprando</a>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div>
+            <h4>Rosa Vermelha Essências</h4>
+            <p>Perfumes Artesanais</p>
+        </div>
+        <div class="footer-section">
+            <h4>Fale Conosco</h4>
+            <p><i class="fas fa-envelope"></i> roseluizmiguel@gmail.com</p>
+            <p><i class="fab fa-whatsapp"></i> 
+                <a href="https://wa.me/48998215027" target="_blank" style="color:#333;text-decoration:none;">
+                    (48) 99821-5027
+                </a>
+            </p>
+            <p><i class="fab fa-instagram"></i> @rosavermelhaessencias</p>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>&copy; 2025 Rosa Vermelha Essências.</p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
-
 </html>
