@@ -148,7 +148,7 @@ h1,h2{color:var(--cor-primaria);margin-bottom:14px}
    align-items:center;
    justify-content:center;
    border:2px dashed #ddd;
-   padding-bottom:14px;
+   margin-bottom:14px;
 }
 
 h3{font-size:1.1rem;margin-bottom:10px}
@@ -382,5 +382,6 @@ footer{
 }
 
 /* fim do CSS */
+
 
 
