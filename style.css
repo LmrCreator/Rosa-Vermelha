@@ -157,7 +157,7 @@ h3{font-size:1.1rem;margin-bottom:10px}
 
 .img-rotativa-rosas { 
     width: 100%;
-    max-height: 250px; 
+    height: 250px; 
     background-size: cover;
     background-position: center;
     border-radius: 10px; 
@@ -175,7 +175,7 @@ h3{font-size:1.1rem;margin-bottom:10px}
 
 .img-rotativa-alecrim { 
     width: 100%;
-    max-height: 250px; 
+    height: 250px; 
     background-size: cover;
     background-position: center;
     border-radius: 10px; 
@@ -416,5 +416,6 @@ footer{
 }
 
 /* fim do CSS */
+
 
 
