@@ -155,42 +155,6 @@ h3{font-size:1.1rem;margin-bottom:10px}
 .preco{font-size:1.25rem;color:var(--cor-primaria);font-weight:bold}
 .estoque-display{font-size:.9rem;color:#666;margin-bottom:12px}
 
-.img-rotativa-rosas { 
-    width: 100%;
-    height: 250px; 
-    background-size: cover;
-    background-position: center;
-    border-radius: 10px; 
-    margin-bottom:14px;
-    animation: trocaRosase 30s infinite ease-in-out;
-}
-
-@keyframes trocaRosase {
-    0%   { background-image: url("rosa-verm.jpg"); } 
-    33%  { background-image: url("rosa-verm-vela.jpg"); } 
-    66%  { background-image: url("rosa-verm-3.jpg"); } 
-    100% { background-image: url("rosa-verm.jpg"); } 
-}
-
-/* --------------------------- */
-
-.img-rotativa-alecrim { 
-    width: 100%;
-    height: 250px; 
-    background-size: cover;
-    background-position: center;
-    border-radius: 10px; 
-    margin-bottom:14px;
-    animation: trocaAlecrim 30s infinite ease-in-out;
-}
-
-@keyframes trocaAlecrim {
-    0%   { background-image: url("alecrim-ar-livre.jpg"); } 
-    33%  { background-image: url("alecrim-carro.jpg"); } 
-    66%  { background-image: url("alecrim-aromatizador.jpg"); } 
-    100% { background-image: url("alecrim-ar-livre.jpg"); }
-}
-
 /* --- BOTÕES --- */
 button,
 .btn-adicionar,
@@ -418,6 +382,7 @@ footer{
 }
 
 /* fim do CSS */
+
 
 
 
