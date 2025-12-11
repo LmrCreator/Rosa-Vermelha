@@ -24,6 +24,10 @@ const ESTOQUE_SIMULADO_INICIAL = {
     "6": 3,
     "7": 5,
     "8": 4,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0,
 };
 
 // --- FUNÇÕES GERAIS ---
@@ -210,7 +214,7 @@ function atualizarVisualEstoque(id, quantidade) {
     if (btn) {
         if (quantidade <= 0) {
             btn.disabled = true;
-            btn.innerHTML = 'Indisponível <i class="fas fa-ban"></i>';
+            btn.innerHTML = 'Em produção <i class="fas fa-hourglass-half"></i>';
             btn.style.backgroundColor = "#ccc";
         } else {
             btn.disabled = false;
@@ -228,7 +232,7 @@ function adicionarAoCarrinho(id, nome, preco) {
     }
 
     if (estoque[id] !== undefined && estoque[id] <= 0) {
-        showToast("Produto esgotado!", true);
+        showToast("Produto esgotado/em!", true);
         return;
     }
 
@@ -452,6 +456,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // atualiza badge inicial
     updateCartIconCount();
 });
+
 
 
 
