@@ -5,7 +5,7 @@
 // --- CONFIGURAÇÃO ---
 const NUMERO_WHATSAPP = "48998215027"; 
 const LS_KEY = 'rosaVermelhaCart';
-const ESTOQUE_MAP_KEY = 'rosaVermelhaStockMap_v8';
+const ESTOQUE_MAP_KEY = 'rosaVermelhaStockMap_v9';
 
 // Configuração do Frete
 const SEDE_LAT = -27.4328448;
@@ -18,7 +18,7 @@ const FRETE_FIXO = 0;
 const ESTOQUE_SIMULADO_INICIAL = {
     "1": 3,
     "2": 1,
-    "3": 0,
+    "3": 2,
     "4": 1,
     "5": 1,
     "6": 1,
@@ -26,7 +26,7 @@ const ESTOQUE_SIMULADO_INICIAL = {
     "8": 4,
     "9": 4,
     "10": 5,
-    "11": 0,
+    "11": 3,
     "12": 4,
 };
 
@@ -456,6 +456,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // atualiza badge inicial
     updateCartIconCount();
 });
+
 
 
 
