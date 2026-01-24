@@ -5,7 +5,7 @@
 // --- CONFIGURAÇÃO ---
 const NUMERO_WHATSAPP = "48998215027"; 
 const LS_KEY = 'rosaVermelhaCart';
-const ESTOQUE_MAP_KEY = 'rosaVermelhaStockMap_v9';
+const ESTOQUE_MAP_KEY = 'rosaVermelhaStockMap_v10';
 
 // Configuração do Frete
 const SEDE_LAT = -27.4328448;
@@ -28,6 +28,8 @@ const ESTOQUE_SIMULADO_INICIAL = {
     "10": 5,
     "11": 3,
     "12": 4,
+    "13": 2,
+    "14": 2,
 };
 
 // --- FUNÇÕES GERAIS ---
@@ -456,6 +458,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // atualiza badge inicial
     updateCartIconCount();
 });
+
 
 
 
