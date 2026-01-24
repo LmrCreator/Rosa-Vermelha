@@ -16,20 +16,20 @@ const FRETE_FIXO = 0;
 
 // ESTOQUE INICIAL
 const ESTOQUE_SIMULADO_INICIAL = {
-    "1": 3,
-    "2": 1,
-    "3": 2,
-    "4": 1,
-    "5": 1,
-    "6": 1,
-    "7": 2,
-    "8": 4,
-    "9": 4,
-    "10": 5,
-    "11": 3,
-    "12": 4,
-    "13": 2,
-    "14": 2,
+   "1": 3,
+   "2": 1,
+   "3": 2,
+   "4": 1,
+   "5": 1,
+   "6": 1,
+   "7": 2,
+   "8": 4,
+   "9": 4,
+   "10": 5,
+   "11": 3,
+   "12": 4,
+   "13": 2,
+   "14": 2,
 };
 
 // --- FUNÇÕES GERAIS ---
@@ -458,6 +458,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // atualiza badge inicial
     updateCartIconCount();
 });
+
 
 
 
