@@ -30,6 +30,9 @@ const ESTOQUE_SIMULADO_INICIAL = {
    "12": 4,
    "13": 2,
    "14": 2,
+   "15": 2,
+   "16": 5,
+   "17": 2,
 };
 
 // --- FUNÇÕES GERAIS ---
@@ -458,6 +461,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // atualiza badge inicial
     updateCartIconCount();
 });
+
 
 
 
