@@ -1,7 +1,7 @@
 /* ===========================
    style.css — Rosa Vermelha Essências
    Tema: Vermelho & Champagne + Branco Clean
-   Versão Premium Mix (Pulse + Glow + Bounce)
+   Versão Reestruturada e Sofisticada
    =========================== */
 
 /* --- VARIAVEIS E RESET --- */
@@ -50,19 +50,16 @@ header{
     display:flex;align-items:center;justify-content:space-between;gap:18px;
 }
 
-/* --- ANIMAÇÃO PREMIUM DA LOGO (Pulse + Glow + Bounce) --- */
+/* --- DESIGN DA LOGO (Efeito Leve e Elegante no Hover) --- */
 .site-icon img{
     height:60px;
-    animation: logoMix 4s ease-in-out infinite !important;
-    transform-origin:center;
+    transition: transform 0.35s ease, filter 0.35s ease;
+    transform-origin: center;
 }
 
-@keyframes logoMix{
-    0%   { transform:scale(1) translateY(0); filter:drop-shadow(0 0 0 rgba(255,200,80,0)); }
-    25%  { transform:scale(1.08) translateY(-2px); filter:drop-shadow(0 0 8px rgba(255,200,80,0.45)); }
-    50%  { transform:scale(1.06) translateY(0); filter:drop-shadow(0 0 12px rgba(255,200,80,0.35)); }
-    75%  { transform:scale(1.03) translateY(-3px); filter:drop-shadow(0 0 6px rgba(255,200,80,0.25)); }
-    100% { transform:scale(1) translateY(0); filter:drop-shadow(0 0 0 rgba(255,200,80,0)); }
+.site-icon img:hover{
+    transform: scale(1.05) translateY(-2px);
+    filter: drop-shadow(0 0 10px rgba(255,200,80,0.5));
 }
 
 /* --- MENU MOBILE --- */
@@ -95,7 +92,7 @@ header{
     flex-grow:1;max-width:420px;margin:0 18px;align-items:center;
     box-shadow:0 6px 14px rgba(0,0,0,0.04);transition:all .22s;
 }
-.search-container:hover{
+.search-container:hover, .search-container:focus-within{
     box-shadow:0 10px 30px rgba(0,0,0,0.08);
     transform:translateY(-2px);
 }
@@ -228,18 +225,6 @@ button,
     transform:none !important;
 }
 
-/* --- TOAST --- */
-#toast-container{
-    position:fixed;top:20px;right:20px;z-index:9999;
-    display:flex;flex-direction:column;gap:12px;
-}
-.toast{
-    background:#222;color:white;padding:13px 18px;border-radius:10px;
-    display:flex;gap:10px;align-items:center;
-    border-left:6px solid var(--cor-secundaria);
-    animation: slideIn .3s ease-out;
-}
-
 /* --- FRETE --- */
 .frete-container{
     margin:14px 0;padding:12px;background:white;border-radius:10px;
@@ -262,10 +247,6 @@ footer{
 @keyframes slideIn{
     from{transform:translateY(10px);opacity:0}
     to{transform:translateY(0);opacity:1}
-}
-
-@keyframes fadeOut{
-    to{opacity:0;transform:translateX(30px)}
 }
 
 /* --- MOBILE --- */
@@ -328,7 +309,6 @@ footer{
     border: 1px solid rgba(255,255,255,0.55);
 }
 
-/* Barra de progresso iOS */
 .toast::after {
     content: "";
     position: absolute;
@@ -342,13 +322,11 @@ footer{
     border-bottom-right-radius: 12px;
 }
 
-/* Ícone */
 .toast i {
     font-size: 1.3rem;
     opacity: 0.9;
 }
 
-/* Animações iOS */
 @keyframes iosSlideUp {
     from {
         transform: translateY(30px) scale(0.97);
@@ -375,18 +353,7 @@ footer{
     }
 }
 
-/* Barra de progressão (5 segundos) */
 @keyframes toastTimer {
     from { width: 100%; }
     to { width: 0%; }
 }
-
-/* fim do CSS */
-
-
-
-
-
-
-
-

@@ -1,41 +1,22 @@
 /* Script Principal - Rosa Vermelha Essências 
-   Versão: "Sacola" + Frete SEM PREÇO + Toast estilo iOS
+   Versão: Sacola + Frete + Toast estilo iOS + Busca Global
 */
 
 // --- CONFIGURAÇÃO ---
 const NUMERO_WHATSAPP = "48998215027"; 
 const LS_KEY = 'rosaVermelhaCart';
-const ESTOQUE_MAP_KEY = 'rosaVermelhaStockMap_v11';
-
-// Configuração do Frete
-const SEDE_LAT = -27.4328448;
-const SEDE_LON = -48.4016167;
-
-// Sempre sem preço
-const FRETE_FIXO = 0;
+const ESTOQUE_MAP_KEY = 'rosaVermelhaStockMap_v15';
 
 // ESTOQUE INICIAL
 const ESTOQUE_SIMULADO_INICIAL = {
-   "1": 3,
-   "2": 1,
-   "3": 2,
-   "4": 1,
-   "5": 1,
-   "6": 1,
-   "7": 2,
-   "8": 4,
-   "9": 4,
-   "10": 5,
-   "11": 3,
-   "12": 4,
-   "13": 2,
-   "14": 2,
-   "15": 2,
-   "16": 5,
-   "17": 2,
+   "1": 0, "2": 0, "3": 0, "4": 0, "5": 4, "6": 1, "7": 4, "8": 0,
+   "9": 0, "10": 0, "11": 4, "12": 4, "13": 0, "14": 0, "15": 0,
+   "16": 10, "17": 1, "18": 1, "19": 0, "20": 0, "21": 0, "22": 1,
+   "23": 1, "24": 0, "25": 2, "26": 1, "27": 1, "28": 3, "29": 4,
+   "30": 1, "31": 2, "32": 1, "33": 1
 };
 
-// --- FUNÇÕES GERAIS ---
+// --- FUNÇÕES GERAIS E MOBILE ---
 const menuIcon = document.querySelector('.menu-mobile-icon');
 const navLinks = document.querySelector('.nav-links');
 if (menuIcon) {
@@ -43,10 +24,9 @@ if (menuIcon) {
 }
 
 /* ======================================================
-   🔔 TOAST — iOS STYLE + canto inferior direito
+   🔔 TOAST — iOS STYLE
 ====================================================== */
 function showToast(message, isError = false) {
-
     let container = document.getElementById('toast-container');
     if (!container) {
         container = document.createElement('div');
@@ -90,15 +70,12 @@ function showToast(message, isError = false) {
 
     container.appendChild(toast);
 
-    // Fechar ao clicar
     toast.addEventListener("click", () => {
         toast.classList.add("hide");
         toast.addEventListener("animationend", () => toast.remove());
     });
 
-    // Fechar sozinho em 5s
     setTimeout(() => {
-        // se já removido pelo clique, ignore
         if (!document.body.contains(toast)) return;
         toast.classList.add("hide");
         toast.addEventListener("animationend", () => toast.remove());
@@ -106,19 +83,75 @@ function showToast(message, isError = false) {
 }
 
 /* ======================================================
-   FRETE — SEM PREÇO (somente endereço)
+   🔍 BARRA DE BUSCA GLOBAL
 ====================================================== */
+function filtrarProdutos(termo) {
+    const termoClean = termo.toLowerCase().trim();
+    document.querySelectorAll('.produto-card').forEach(prod => {
+        const titulo = prod.querySelector('h3') ? prod.querySelector('h3').innerText.toLowerCase() : '';
+        prod.style.display = titulo.includes(termoClean) ? "" : "none";
+    });
+}
 
+function inicializarBuscaGlobal() {
+    const searchInput = document.querySelector('.search-input');
+    const searchBtn = document.querySelector('.search-btn');
+    const isPaginaProdutos = window.location.pathname.includes('produtos.html');
+
+    function executarBusca() {
+        if (!searchInput) return;
+        const termo = searchInput.value.trim();
+
+        if (isPaginaProdutos) {
+            filtrarProdutos(termo);
+        } else if (termo !== '') {
+            window.location.href = `produtos.html?busca=${encodeURIComponent(termo)}`;
+        }
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            if (isPaginaProdutos) {
+                filtrarProdutos(this.value);
+            }
+        });
+
+        searchInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                executarBusca();
+            }
+        });
+    }
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            executarBusca();
+        });
+    }
+
+    // Se estiver na página de produtos e vier com parâmetro na URL
+    if (isPaginaProdutos) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const termoUrl = urlParams.get('busca');
+        if (termoUrl) {
+            if (searchInput) searchInput.value = termoUrl;
+            filtrarProdutos(termoUrl);
+        }
+    }
+}
+
+/* ======================================================
+   FRETE — ENDEREÇO
+====================================================== */
 async function buscarEnderecoECalcularFrete() {
     const cepInput = document.getElementById('cep-input');
     const infoFreteDiv = document.getElementById('info-frete');
     const enderecoHidden = document.getElementById('endereco-completo-hidden');
     const valorFreteHidden = document.getElementById('valor-frete-hidden');
 
-    if (!cepInput || !infoFreteDiv || !enderecoHidden || !valorFreteHidden) {
-        console.warn("Elementos de frete ausentes no DOM.");
-        return;
-    }
+    if (!cepInput || !infoFreteDiv || !enderecoHidden || !valorFreteHidden) return;
 
     const cep = cepInput.value.replace(/\D/g, '');
 
@@ -141,8 +174,6 @@ async function buscarEnderecoECalcularFrete() {
 
         const enderecoTexto = `${data.logradouro || ""}, ${data.bairro || ""}, ${data.localidade || ""} - ${data.uf || ""}`;
         enderecoHidden.value = enderecoTexto.trim().replace(/^,|,$/g, "");
-
-        // Frete SEM preço
         valorFreteHidden.value = "0.00";
 
         infoFreteDiv.innerHTML = `
@@ -163,7 +194,6 @@ async function buscarEnderecoECalcularFrete() {
 /* ======================================================
    ESTOQUE / SACOLA / WHATSAPP
 ====================================================== */
-
 function getCart() {
     const cart = localStorage.getItem(LS_KEY);
     return cart ? JSON.parse(cart) : [];
@@ -185,15 +215,10 @@ function saveEstoque(estoque) {
     localStorage.setItem(ESTOQUE_MAP_KEY, JSON.stringify(estoque));
 }
 
-/* ===== Função faltante que causava erro =====
-   Atualiza contador do ícone / badge do carrinho
-*/
 function updateCartIconCount() {
     try {
         const cart = getCart();
         const total = cart.reduce((s, it) => s + (it.quantity || it.quantidade || 0), 0);
-
-        // Vários possíveis IDs que seu HTML pode ter
         const elems = document.querySelectorAll('#cart-count, #cart-count-icon, .cart-badge');
         elems.forEach(el => el.textContent = total);
     } catch (e) {
@@ -231,13 +256,8 @@ function atualizarVisualEstoque(id, quantidade) {
 function adicionarAoCarrinho(id, nome, preco) {
     const estoque = getEstoque();
 
-    if (estoque[id] === undefined) {
-        // se ID não existir no estoque, assume disponível
-        console.warn("ID não encontrado no estoque:", id);
-    }
-
     if (estoque[id] !== undefined && estoque[id] <= 0) {
-        showToast("Produto esgotado/em!", true);
+        showToast("Produto esgotado!", true);
         return;
     }
 
@@ -250,9 +270,7 @@ function adicionarAoCarrinho(id, nome, preco) {
     const itemExistente = cart.find(item => String(item.id) === String(id));
 
     if (itemExistente) {
-        // compatibilidade com suas chaves anteriores
         if (typeof itemExistente.quantity === 'number') itemExistente.quantity++;
-        else if (typeof itemExistente.quantidade === 'number') itemExistente.quantidade++;
         else itemExistente.quantity = (itemExistente.quantity || itemExistente.quantidade || 0) + 1;
     } else {
         cart.push({ id: String(id), name: nome, priceValue: parseFloat(preco), quantity: 1 });
@@ -281,7 +299,6 @@ function updateCartItem(productId, quantityChange) {
                     return;
                 }
             } else {
-                // se não temos controle de estoque para esse id, só aumenta
                 item.quantity++;
             }
         }
@@ -304,17 +321,11 @@ function renderCart() {
     if (!container) return;
 
     const cart = getCart();
-    const valorFreteHidden = document.getElementById('valor-frete-hidden');
-    let frete = 0;
-    if (valorFreteHidden) frete = parseFloat(valorFreteHidden.value) || 0;
-
     let totalProdutos = 0;
     let totalItens = 0;
 
     if (cart.length === 0) {
-        container.innerHTML =
-            '<p style="text-align:center;margin-top:30px;color:#666;">Sua sacola está vazia.</p>';
-
+        container.innerHTML = '<p style="text-align:center;margin-top:30px;color:#666;">Sua sacola está vazia.</p>';
         const btnFinal = document.getElementById('finalizar-compra-btn');
         if (btnFinal) btnFinal.disabled = true;
 
@@ -350,13 +361,11 @@ function renderCart() {
         `;
     }).join('');
 
-    const totalFinal = totalProdutos; // SEM frete
-
     const btnFinal = document.getElementById('finalizar-compra-btn');
     if (btnFinal) btnFinal.disabled = false;
 
     const cartTotalEl = document.getElementById('cart-total');
-    if (cartTotalEl) cartTotalEl.innerText = `R$ ${totalFinal.toFixed(2).replace('.', ',')}`;
+    if (cartTotalEl) cartTotalEl.innerText = `R$ ${totalProdutos.toFixed(2).replace('.', ',')}`;
 
     const cartCountEl = document.getElementById('cart-count');
     if (cartCountEl) cartCountEl.innerText = totalItens;
@@ -365,24 +374,17 @@ function renderCart() {
     if (displayFreteEl) displayFreteEl.innerText = "A combinar";
 }
 
-/* ======================================================
-   FINALIZAR COMPRA (WHATSAPP) — sem preço de frete
-====================================================== */
-
 function finalizePurchase() {
     const cart = getCart();
     if (cart.length === 0) return;
 
     const endereco = (document.getElementById('endereco-completo-hidden') || {}).value || "Endereço não informado";
-
     let message = "Olá! Gostaria de finalizar minha sacola na Rosa Vermelha Essências:\n\n";
-
     let totalProdutos = 0;
 
     cart.forEach(item => {
         const total = (item.priceValue || 0) * (item.quantity || 0);
         totalProdutos += total;
-
         message += `${item.quantity}x ${item.name} - R$ ${total.toFixed(2).replace('.', ',')}\n`;
     });
 
@@ -398,13 +400,8 @@ function finalizePurchase() {
     window.open(`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(message)}`);
 }
 
-/* ======================================================
-   INICIALIZAÇÃO E EVENTOS
-====================================================== */
-
 function carregarEstoqueVisual() {
     const estoque = getEstoque();
-
     document.querySelectorAll('.btn-adicionar').forEach(btn => {
         const id = btn.getAttribute('data-id');
         const qtd = estoque[id] !== undefined ? parseInt(estoque[id]) : 0;
@@ -412,30 +409,25 @@ function carregarEstoqueVisual() {
     });
 }
 
+/* ======================================================
+   INICIALIZAÇÃO DA PÁGINA
+====================================================== */
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Carrega estoque visual se houver produtos na página
     if (document.querySelectorAll('.produto-card').length > 0) {
         carregarEstoqueVisual();
     }
 
-    // Renderiza carrinho se estiver na página do carrinho
     if (document.getElementById('cart-items')) {
         renderCart();
-        document.getElementById('finalizar-compra-btn')
-            ?.addEventListener('click', finalizePurchase);
-
-        // correção: seu botão no HTML é "btn-frete"
-        document.getElementById('btn-frete')
-            ?.addEventListener('click', buscarEnderecoECalcularFrete);
+        document.getElementById('finalizar-compra-btn')?.addEventListener('click', finalizePurchase);
+        document.getElementById('btn-frete')?.addEventListener('click', buscarEnderecoECalcularFrete);
     }
 
-    // (Re)ativa botões Adicionar — **SEM CLONAR** para não quebrar listeners/estado
     document.querySelectorAll('.btn-adicionar').forEach(btn => {
-        // Remove possíveis listeners antigos duplicados para evitar handlers múltiplos
         btn.replaceWith(btn.cloneNode(true));
     });
-    // Re-query após cloneNode replacement to attach a clean single listener
+
     document.querySelectorAll('.btn-adicionar').forEach(btn => {
         btn.addEventListener('click', function () {
             adicionarAoCarrinho(
@@ -446,29 +438,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // barra de busca
-    const input = document.querySelector('.search-input');
-    if (input) {
-        input.addEventListener('input', function () {
-            const termo = this.value.toLowerCase().trim();
-            document.querySelectorAll('.produto-card').forEach(prod => {
-                const titulo = prod.querySelector('h3').innerText.toLowerCase();
-                prod.style.display = titulo.includes(termo) ? "" : "none";
-            });
-        });
-    }
+    // Inicializa Busca Global em todas as páginas
+    inicializarBuscaGlobal();
 
-    // atualiza badge inicial
     updateCartIconCount();
 });
-
-
-
-
-
-
-
-
-
-
-
