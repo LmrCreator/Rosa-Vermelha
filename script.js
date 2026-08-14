@@ -5,7 +5,7 @@
 // --- CONFIGURAÇÃO ---
 const NUMERO_WHATSAPP = "48998215027"; 
 const LS_KEY = 'rosaVermelhaCart';
-const ESTOQUE_MAP_KEY = 'rosaVermelhaStockMap_v17';
+const ESTOQUE_MAP_KEY = 'rosaVermelhaStockMap_v18';
 
 // ESTOQUE INICIAL
 const ESTOQUE_SIMULADO_INICIAL = {
@@ -14,7 +14,7 @@ const ESTOQUE_SIMULADO_INICIAL = {
    "16": 8, "17": 1, "18": 0, "19": 4, "20": 2, "21": 0, "22": 1,
    "23": 1, "24": 2, "25": 1, "26": 0, "27": 2, "28": 2, "29": 0,
    "30": 2, "31": 1, "32": 1, "33": 2, "34": 2, "35": 1, "36": 1, 
-   "37": 3,
+   "37": 3, "38": 2,
 };
 
 // --- FUNÇÕES GERAIS E MOBILE ---
